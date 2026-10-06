@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,shrink-to-fit=no">
 <meta name="theme-color" content="#2e2620">
 <title>Chaos Gambit</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Special+Elite&family=Permanent+Marker&family=Abril+Fatface&display=swap">
@@ -113,6 +113,51 @@ input{font-family:var(--type);font-size:14px;background:#fff8e6;color:var(--ink)
 .pc.ghost{position:fixed;z-index:30;pointer-events:none;transform:rotate(-7deg) scale(1.2);filter:drop-shadow(6px 9px 0 rgba(0,0,0,.4))}
 @keyframes pop{from{transform:translateY(-40%) rotate(20deg) scale(1.3)}}
 @keyframes shake{25%{transform:translate(4px,-3px) rotate(.5deg)}50%{transform:translate(-4px,3px) rotate(-.5deg)}75%{transform:translate(3px,3px)}}
+
+/* ---- overflow guard: nothing may widen the page (iOS grows the viewport to fit overflow) ---- */
+html,body{max-width:100%;overflow-x:hidden;overflow-x:clip}
+body{padding-inline:0}
+.wrap{max-width:1012px;padding-inline:16px;overflow-x:hidden;overflow-x:clip}
+/* ---- phone and tablet layout ---- */
+@media(max-width:919px){
+  body{font-size:15px;padding-block:14px 32px}
+  .wrap{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px 12px}
+  .wrap>header{grid-column:1/-1;order:-2;gap:8px}
+  h1{font-size:clamp(18px,6.5vw,44px);justify-content:center;flex-wrap:nowrap}
+  header p{text-align:center;transform:none;font-size:15px}
+  #home{grid-column:1/-1;grid-template-columns:minmax(0,1fr);gap:24px;padding-top:8px}
+  .mode{padding:20px 18px 18px;gap:10px}
+  .mode b{font-size:22px}
+  .mode span{font-size:15px}
+  .mode .row2{margin-top:4px}
+  .mode .btn{flex:1 1 0;text-align:center}
+  #game .col{display:contents}
+  #game .col>*{grid-column:1/-1}
+  #game .col>.panel{transform:none}
+  #game .col>.p-round{order:-1;padding:9px 14px;box-shadow:2px 3px 0 rgba(0,0,0,.4)}
+  .p-round::before{display:none}
+  .p-round .round{font-size:17px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:2px 12px}
+  .p-round .round small{font-size:14px}
+  .boardwrap{justify-self:center}
+  #status{font-size:17px;text-align:center;min-height:2.9em;display:grid;place-items:center}
+  #net{text-align:center}
+  .hand{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 10px}
+  .card{padding:10px 12px 12px;min-height:64px}
+  .card b{font-size:16px}
+  .card span{font-size:13px;line-height:1.3}
+  .btn{min-height:44px;padding:8px 16px;font-size:14px}
+  input{min-height:44px;font-size:16px}
+  #game .col>.p-mine{grid-column:1;margin-top:10px}
+  #game .col>.p-foe{grid-column:2;margin-top:10px}
+  .p-mine,.p-foe{padding:16px 12px 12px}
+  .panel h2{font-size:12px}
+  ul.perks li b{font-size:14px}
+  ul.perks li span{font-size:12.5px;line-height:1.3}
+  #ov{inset:0;padding:14px;gap:8px;transform:none;justify-content:flex-start}
+  #ov h3{font-size:20px}
+  #ov .card{min-height:0;padding:8px 10px}
+  details{font-size:14px}
+}
 </style>
 </head>
 <body>
@@ -155,11 +200,11 @@ input{font-family:var(--type);font-size:14px;background:#fff8e6;color:var(--ink)
   </div>
 
   <div class="col">
-    <div class="panel">
+    <div class="panel p-round">
       <div class="round" id="round"></div>
     </div>
-    <div class="panel"><h2>YOUR UPGRADES</h2><ul class="perks" id="myperks"></ul></div>
-    <div class="panel"><h2>ENEMY UPGRADES</h2><ul class="perks foe" id="foeperks"></ul></div>
+    <div class="panel p-mine"><h2>YOUR UPGRADES</h2><ul class="perks" id="myperks"></ul></div>
+    <div class="panel p-foe"><h2>ENEMY UPGRADES</h2><ul class="perks foe" id="foeperks"></ul></div>
     <div class="panel"><h2>LOG</h2><ul id="log"></ul></div>
   </div>
   </div>
